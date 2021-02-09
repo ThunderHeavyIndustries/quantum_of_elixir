@@ -4,35 +4,70 @@ defmodule Operation do
   """
 
   def read(qubit) do
+    mag =
+      Qubit.zero_magnitude(qubit)
+      |> Kernel.*(100)
+      |> IO.inspect()
+      |> floor()
 
+    Qubit.put(qubit, :collapsed, true)
+
+    case :rand.uniform(100) <= mag do
+      true ->
+        write(qubit, 1)
+        |> Qubit.bracket()
+        |> IO.inspect()
+
+      false ->
+        write(qubit, 0)
+        |> Qubit.bracket()
+        |> IO.inspect()
+    end
+
+    qubit
   end
 
-  def write(qubit) do
+  def write(qubit, mag) do
+    Qubit.put(qubit, :magnitude, mag)
 
+    qubit
   end
 
   def nott(qubit) do
+    zero_mag = Qubit.zero_magnitude(qubit)
 
+    new_zero =
+      (1.0 - zero_mag)
+      |> Float.round(2)
+
+    Qubit.put(qubit, :magnitude, new_zero)
+
+    qubit
   end
 
   def hadamard(qubit) do
-
+    # TODO
+    qubit
   end
 
   def phase(qubit) do
-
+    # TODO
+    qubit
   end
 
   def rotx(qubit) do
-
+    # TODO
+    qubit
   end
 
   def roty(qubit) do
-
+    # TODO
+    qubit
   end
 
   def rnot(qubit) do
-
+    # TODO
+    qubit
   end
 
   defdelegate had(qubit), to: __MODULE__, as: :hadamard
