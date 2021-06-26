@@ -47,6 +47,17 @@ defmodule Operation do
 
   def hadamard(qubit) do
     # TODO
+    Qubit.zero_magnitude(qubit)
+    |> case do
+         0.5 ->
+           prev = Qubit.get(qubit, :had_prev)
+           Qubit.put(qubit, :magnitude, prev)
+
+         zero_mag ->
+           Qubit.put(qubit, :had_prev, zero_mag)
+           Qubit.put(qubit, :magnitude, 0.5)
+       end
+
     qubit
   end
 

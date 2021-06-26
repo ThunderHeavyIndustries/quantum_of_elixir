@@ -13,8 +13,9 @@ defmodule Qubit do
       |> Float.round(2)
 
     phase = {0, 0}
+    state = %{magnitude: mag, phase: phase, entangled: [], had_prev: mag, collapsed: false}
 
-    {:ok, qubit} = Agent.start_link(fn -> %{magnitude: mag, phase: phase, entangled: [], collapsed: false} end)
+    {:ok, qubit} = Agent.start_link(fn -> state end)
 
     qubit
   end
@@ -92,8 +93,8 @@ defmodule Qubit do
     zero_mag = zero_magnitude(agent)
 
     one_mag =
-    (1.0 - zero_mag)
-    |> Float.round(2)
+      (1.0 - zero_mag)
+      |> Float.round(2)
 
     "|#{zero_mag}>  |#{one_mag}>"
   end
